@@ -1,6 +1,7 @@
 use anyhow::Context;
 use axum::{Json, Router, routing::get};
 use serde::Serialize;
+use tower_http::cors::CorsLayer;
 
 const MILLION: f64 = 1_000_000.0;
 
@@ -30,7 +31,7 @@ impl From<usize> for Year {
             2021 => Year::Y2021,
             2022 => Year::Y2022,
             2023 => Year::Y2023,
-            2024=> Year::Y2024,
+            2024 => Year::Y2024,
             _ => unreachable!(),
         }
     }
@@ -136,6 +137,7 @@ fn app() -> Router {
         .route("/revenue", get(get_revenue))
         .route("/expenditure", get(get_expenditure))
         .route("/tendering", get(get_tendering))
+        .layer(CorsLayer::permissive())
 }
 
 #[tokio::main]
